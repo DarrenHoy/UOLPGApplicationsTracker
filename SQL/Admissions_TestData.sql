@@ -19,12 +19,6 @@ union all select '2021-22','01-SEP-2021','31-AUG-2022'
 union all select '2022-23','01-SEP-2022','31-AUG-2023'
 union all select '2023-24','01-SEP-2023','31-AUG-2024';
 
-insert into ApplicationStatus(EnumCode, Description)
-select 1, 'Submitted'
-union all select 2, 'Under review'
-union all select 3, 'Approved'
-union all select 4, 'Rejected'
-
 --I am doing a terrible thing and putting passwords into the database in plain text!
 insert into AppUser(Username, DisplayName, UserPassword)
 select 'AdminBob','Bob','adminbob'
@@ -42,7 +36,13 @@ from
 	from AppUser
 ) as AppRoleMembers;
 
-insert into ModeOfStudy(EnumCode, Description)
+insert into ApplicationStatus(Id, Description)
+select 1, 'Submitted'
+union all select 2, 'Under review'
+union all select 3, 'Approved'
+union all select 4, 'Rejected'
+
+insert into ModeOfStudy(Id, Description)
 select 1, 'Full time'
 union all select 2, 'Part time'
 
@@ -224,4 +224,65 @@ union all select 'JAYLEN','HART',CONVERT(datetime, '05/07/1984', 103),'jaylen.ha
 union all select 'CHRISTINE','KRISTJANSSON',CONVERT(datetime, '18/08/1997', 103),'christine.kristjansson@barfoo.co.uk','N','password123'
 union all select 'SHELBY','LOGAN',CONVERT(datetime, '02/02/2005', 103),'shelby.logan@foobar.ac.uk,57563','Y','password123'
 union all select 'KATE','WHITEING',CONVERT(datetime, '16/06/1972', 103),'kate.whiteing@barfoo.co.uk','N','password123'
+
+
+declare @studentId uniqueidentifier, @courseId uniqueidentifier, @admissionTermId uniqueidentifier;
+
+begin	
+	select @admissionTermId = Id from AdmissionTerm where Description='2021-22'
+	select @studentId = Id from Student where EmailAddress = 'steven.lawson@anemailprovider.com'
+	select @courseId = Id from 
+		(
+			select Id, row_number() over (partition by Id order by Id) rw 
+			from ProgrammeOfStudy 
+			where Description='Accounting and Finance - Master of Science (MSc)'
+		) a where a.rw=1
+
+	insert into Application(AdmissionTermId, ProgrammeOfStudyId, StudentId, ModeOfStudyId, ApplicationStatusId)
+	values (@admissionTermId, @courseId, @studentId, 1, 1);
+end;
+
+begin
+	select @admissionTermId = Id from AdmissionTerm where Description='2022-23'
+	select @studentId = Id from Student where EmailAddress = 'steven.lawson@anemailprovider.com'
+	select @courseId = Id from 
+		(
+			select Id, row_number() over (partition by Id order by Id) rw 
+			from ProgrammeOfStudy 
+			where Description='Arts - Master of Research (MRes)'
+		) a where a.rw=1
+
+	insert into Application(AdmissionTermId, ProgrammeOfStudyId, StudentId, ModeOfStudyId, ApplicationStatusId)
+	values (@admissionTermId, @courseId, @studentId, 2, 1);
+end;
+
+
+begin
+	select @admissionTermId = Id from AdmissionTerm where Description='2020-21'
+	select @studentId = Id from Student where EmailAddress = 'kate.whiteing@barfoo.co.uk'
+	select @courseId = Id from 
+		(
+			select Id, row_number() over (partition by Id order by Id) rw 
+			from ProgrammeOfStudy 
+			where Description='Arts - Master of Research (MRes)'
+		) a where a.rw=1
+
+	insert into Application(AdmissionTermId, ProgrammeOfStudyId, StudentId, ModeOfStudyId, ApplicationStatusId)
+	values (@admissionTermId, @courseId, @studentId, 2, 1);
+end;
+
+begin
+	select @admissionTermId = Id from AdmissionTerm where Description='2023-24'
+	select @studentId = Id from Student where EmailAddress = 'tianna.villa@foobar.ac.uk'
+	select @courseId = Id from 
+		(
+			select Id, row_number() over (partition by Id order by Id) rw 
+			from ProgrammeOfStudy 
+			where Description='International Human Rights Law - Master of Laws (LLM)'
+		) a where a.rw=1
+
+	insert into Application(AdmissionTermId, ProgrammeOfStudyId, StudentId, ModeOfStudyId, ApplicationStatusId)
+	values (@admissionTermId, @courseId, @studentId, 2, 2);
+end;
+
 

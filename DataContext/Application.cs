@@ -17,16 +17,14 @@ namespace PGProgrammeApplications.DataContext
         public System.Guid Id { get; set; }
         public System.Guid AdmissionTermId { get; set; }
         public System.Guid ProgrammeOfStudyId { get; set; }
-        public System.Guid ModeOfStudyId { get; set; }
+        public ModeOfStudy ModeOfStudy { get; set; }
         public string Comments { get; set; }
         public System.DateTime ApplicationTimestamp { get; set; }
         public System.Guid StudentId { get; set; }
-        public System.Guid ApplicationStatusId { get; set; }
+        public ApplicationStatus ApplicationStatus { get; set; }
     
         public virtual AdmissionTerm AdmissionTerm { get; set; }
-        public virtual ModeOfStudy ModeOfStudy { get; set; }
         public virtual ProgrammeOfStudy ProgrammeOfStudy { get; set; }
         public virtual Student Student { get; set; }
-        public virtual ApplicationStatu ApplicationStatu { get; set; }
     }
 }

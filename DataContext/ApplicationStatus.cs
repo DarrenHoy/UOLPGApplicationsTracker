@@ -11,9 +11,11 @@ namespace PGProgrammeApplications.DataContext
 {
     using System;
     
-    public enum ModeOfStudy : int
+    public enum ApplicationStatus : int
     {
-        FullTime = 1,
-        PartTime = 2
+        Submitted = 1,
+        UnderReview = 2,
+        Approved = 3,
+        Rejected = 4
     }
 }

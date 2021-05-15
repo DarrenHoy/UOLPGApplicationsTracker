@@ -41,15 +41,6 @@ create table AdmissionTerm(
 	EndDate date not null
 );
 
-create table ModeOfStudy(
-	Id uniqueidentifier default newid() primary key,
-	EnumCode int not null,
-	Description nvarchar(20),
-
-	constraint UQ_ModeOfStudy_EnumCode unique (EnumCode)
-
-);
-
 create table AppUser(
 	Id uniqueidentifier default newid() primary key,
 	Username nvarchar(200),
@@ -73,15 +64,20 @@ create table AppUserRoleMember(
 );
 
 
+create table ModeOfStudy(
+	Id int not null,
+	Description nvarchar(20),
 
+	constraint PK_ModeOfStudy_Id primary key (Id),
+	constraint UQ_ModeOfStudy_Description unique (Description),
+);
 
 create table ApplicationStatus(
-	Id uniqueidentifier default newid() primary key,
-	EnumCode int not null,
+	Id int not null,
 	Description nvarchar(50) not null,
 
-	constraint UQ_ApplicationStatus_Description unique (Description),
-	constraint UQ_ApplicationStatus_EnumCode unique (EnumCode)
+	constraint PK_ApplicationStatus_ID primary key (Id),
+	constraint UQ_ApplicationStatus_Description unique (Description)
 );
 
 --ASSUMPTION - all Programmes of Study are available for all Admission Terms and all Modes of Study
@@ -90,14 +86,14 @@ create table Application(
 	AdmissionTermId uniqueidentifier not null,
 	ProgrammeOfStudyId uniqueidentifier not null,
 	StudentId uniqueidentifier not null,
-	ModeOfStudyId uniqueidentifier not null,
-	ApplicationStatusId uniqueidentifier not null,
+	ModeOfStudyId int not null,
+	ApplicationStatusId int not null,
 	Comments nvarchar(max),
 	ApplicationTimestamp datetime not null default current_timestamp,
 
 	constraint FK_Application_ApplicationTerm foreign key (AdmissionTermId) references AdmissionTerm(Id),
 	constraint FK_Application_ProgrammeOfStudyId foreign key (ProgrammeOfStudyId) references ProgrammeOfStudy(Id),
-	constraint FK_Application_StudentId foreign key (ProgrammeOfStudyId) references Student(Id),
+	constraint FK_Application_StudentId foreign key (StudentId) references Student(Id),
 	constraint FK_Application_ModeOfStudyId foreign key (ModeOfStudyId) references ModeOfStudy(Id),
 	constraint FK_Application_ApplicationStatusId foreign key (ApplicationStatusId) references ApplicationStatus(Id)
 );

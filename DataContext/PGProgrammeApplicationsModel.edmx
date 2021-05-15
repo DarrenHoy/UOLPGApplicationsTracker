@@ -22,18 +22,10 @@
           <Property Name="AdmissionTermId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ProgrammeOfStudyId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StudentId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ModeOfStudyId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ApplicationStatusId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModeOfStudyId" Type="int" Nullable="false" />
+          <Property Name="ApplicationStatusId" Type="int" Nullable="false" />
           <Property Name="Comments" Type="nvarchar(max)" />
           <Property Name="ApplicationTimestamp" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ApplicationStatus">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="EnumCode" Type="int" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="AppUser">
           <Key>
@@ -51,14 +43,6 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="AppUserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserRoleId" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ModeOfStudy">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="EnumCode" Type="int" />
-          <Property Name="Description" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="ProgrammeOfStudy">
           <Key>
@@ -86,18 +70,6 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
         </EntityType>
-        <Association Name="FK_Application_ApplicationStatusId">
-          <End Role="ApplicationStatus" Type="Self.ApplicationStatus" Multiplicity="1" />
-          <End Role="Application" Type="Self.Application" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ApplicationStatus">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Application">
-              <PropertyRef Name="ApplicationStatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Application_ApplicationTerm">
           <End Role="AdmissionTerm" Type="Self.AdmissionTerm" Multiplicity="1" />
           <End Role="Application" Type="Self.Application" Multiplicity="*" />
@@ -107,18 +79,6 @@
             </Principal>
             <Dependent Role="Application">
               <PropertyRef Name="AdmissionTermId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Application_ModeOfStudyId">
-          <End Role="ModeOfStudy" Type="Self.ModeOfStudy" Multiplicity="1" />
-          <End Role="Application" Type="Self.Application" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ModeOfStudy">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Application">
-              <PropertyRef Name="ModeOfStudyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -142,7 +102,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Application">
-              <PropertyRef Name="ProgrammeOfStudyId" />
+              <PropertyRef Name="StudentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -173,23 +133,13 @@
         <EntityContainer Name="PGProgrammeApplicationsModelStoreContainer">
           <EntitySet Name="AdmissionTerm" EntityType="Self.AdmissionTerm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Application" EntityType="Self.Application" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ApplicationStatus" EntityType="Self.ApplicationStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppUser" EntityType="Self.AppUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppUserRoleMember" EntityType="Self.AppUserRoleMember" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ModeOfStudy" EntityType="Self.ModeOfStudy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProgrammeOfStudy" EntityType="Self.ProgrammeOfStudy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Application_ApplicationStatusId" Association="Self.FK_Application_ApplicationStatusId">
-            <End Role="ApplicationStatus" EntitySet="ApplicationStatus" />
-            <End Role="Application" EntitySet="Application" />
-          </AssociationSet>
           <AssociationSet Name="FK_Application_ApplicationTerm" Association="Self.FK_Application_ApplicationTerm">
             <End Role="AdmissionTerm" EntitySet="AdmissionTerm" />
-            <End Role="Application" EntitySet="Application" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Application_ModeOfStudyId" Association="Self.FK_Application_ModeOfStudyId">
-            <End Role="ModeOfStudy" EntitySet="ModeOfStudy" />
             <End Role="Application" EntitySet="Application" />
           </AssociationSet>
           <AssociationSet Name="FK_Application_ProgrammeOfStudyId" Association="Self.FK_Application_ProgrammeOfStudyId">
@@ -230,25 +180,14 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="AdmissionTermId" Type="Guid" Nullable="false" />
           <Property Name="ProgrammeOfStudyId" Type="Guid" Nullable="false" />
-          <Property Name="ModeOfStudyId" Type="Guid" Nullable="false" />
+          <Property Name="ModeOfStudy" Type="PGProgrammeApplicationsModel.ModeOfStudy" Nullable="false" />
           <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ApplicationTimestamp" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AdmissionTerm" Relationship="Self.FK_Application_ApplicationTerm" FromRole="Application" ToRole="AdmissionTerm" />
-          <NavigationProperty Name="ModeOfStudy" Relationship="Self.FK_ModeOfStudyId" FromRole="Application" ToRole="ModeOfStudy" />
           <NavigationProperty Name="ProgrammeOfStudy" Relationship="Self.FK_ProgrammeOfStudyId" FromRole="Application" ToRole="ProgrammeOfStudy" />
           <Property Name="StudentId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Student" Relationship="PGProgrammeApplicationsModel.FK_Application_StudentId" FromRole="Application" ToRole="Student" />
-          <Property Name="ApplicationStatusId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="ApplicationStatu" Relationship="PGProgrammeApplicationsModel.FK_Application_ApplicationStatusId" FromRole="Application" ToRole="ApplicationStatu" />
-        </EntityType>
-        <EntityType Name="ApplicationStatu">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="EnumCode" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Applications" Relationship="PGProgrammeApplicationsModel.FK_Application_ApplicationStatusId" FromRole="ApplicationStatu" ToRole="Application" />
+          <Property Name="ApplicationStatus" Type="PGProgrammeApplicationsModel.ApplicationStatus" Nullable="false" />
+          <NavigationProperty Name="Student" Relationship="PGProgrammeApplicationsModel.FK_Application_StudentId1" FromRole="Application" ToRole="Student" />
         </EntityType>
         <EntityType Name="AppUser">
           <Key>
@@ -270,15 +209,6 @@
           <NavigationProperty Name="AppUser" Relationship="Self.FK_AppUserRoleMember_AppUserId" FromRole="AppUserRoleMember" ToRole="AppUser" />
           <NavigationProperty Name="UserRole" Relationship="Self.FK_AppUserRoleMember_UserRoleId" FromRole="AppUserRoleMember" ToRole="UserRole" />
         </EntityType>
-        <EntityType Name="ModeOfStudy">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="EnumCode" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Applications" Relationship="Self.FK_ModeOfStudyId" FromRole="ModeOfStudy" ToRole="Application" />
-        </EntityType>
         <EntityType Name="ProgrammeOfStudy">
           <Key>
             <PropertyRef Name="Id" />
@@ -298,7 +228,7 @@
           <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IsUkResident" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="UserPassword" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Applications" Relationship="PGProgrammeApplicationsModel.FK_Application_StudentId" FromRole="Student" ToRole="Application" />
+          <NavigationProperty Name="Applications" Relationship="PGProgrammeApplicationsModel.FK_Application_StudentId1" FromRole="Student" ToRole="Application" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -317,18 +247,6 @@
             </Principal>
             <Dependent Role="Application">
               <PropertyRef Name="AdmissionTermId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ModeOfStudyId">
-          <End Role="ModeOfStudy" Type="Self.ModeOfStudy" Multiplicity="1" />
-          <End Role="Application" Type="Self.Application" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ModeOfStudy">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Application">
-              <PropertyRef Name="ModeOfStudyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -371,19 +289,13 @@
         <EntityContainer Name="PGProgrammeApplicationsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AdmissionTerms" EntityType="Self.AdmissionTerm" />
           <EntitySet Name="Applications" EntityType="Self.Application" />
-          <EntitySet Name="ApplicationStatus" EntityType="Self.ApplicationStatu" />
           <EntitySet Name="AppUsers" EntityType="Self.AppUser" />
           <EntitySet Name="AppUserRoleMembers" EntityType="Self.AppUserRoleMember" />
-          <EntitySet Name="ModeOfStudies" EntityType="Self.ModeOfStudy" />
           <EntitySet Name="ProgrammeOfStudies" EntityType="Self.ProgrammeOfStudy" />
           <EntitySet Name="Students" EntityType="Self.Student" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
           <AssociationSet Name="FK_Application_ApplicationTerm" Association="Self.FK_Application_ApplicationTerm">
             <End Role="AdmissionTerm" EntitySet="AdmissionTerms" />
-            <End Role="Application" EntitySet="Applications" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ModeOfStudyId" Association="Self.FK_ModeOfStudyId">
-            <End Role="ModeOfStudy" EntitySet="ModeOfStudies" />
             <End Role="Application" EntitySet="Applications" />
           </AssociationSet>
           <AssociationSet Name="FK_ProgrammeOfStudyId" Association="Self.FK_ProgrammeOfStudyId">
@@ -398,16 +310,22 @@
             <End Role="UserRole" EntitySet="UserRoles" />
             <End Role="AppUserRoleMember" EntitySet="AppUserRoleMembers" />
           </AssociationSet>
-          <AssociationSet Name="FK_Application_StudentId" Association="PGProgrammeApplicationsModel.FK_Application_StudentId">
+          <AssociationSet Name="FK_Application_StudentId1" Association="PGProgrammeApplicationsModel.FK_Application_StudentId1">
             <End Role="Student" EntitySet="Students" />
             <End Role="Application" EntitySet="Applications" />
           </AssociationSet>
-          <AssociationSet Name="FK_Application_ApplicationStatusId" Association="PGProgrammeApplicationsModel.FK_Application_ApplicationStatusId">
-            <End Role="ApplicationStatu" EntitySet="ApplicationStatus" />
-            <End Role="Application" EntitySet="Applications" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_Application_StudentId">
+        <EnumType Name="ModeOfStudy">
+          <Member Name="FullTime" Value="1" />
+          <Member Name="PartTime" Value="2" />
+        </EnumType>
+        <EnumType Name="ApplicationStatus">
+          <Member Name="Submitted" Value="1" />
+          <Member Name="UnderReview" Value="2" />
+          <Member Name="Approved" Value="3" />
+          <Member Name="Rejected" Value="4" />
+        </EnumType>
+        <Association Name="FK_Application_StudentId1">
           <End Type="PGProgrammeApplicationsModel.Student" Role="Student" Multiplicity="1" />
           <End Type="PGProgrammeApplicationsModel.Application" Role="Application" Multiplicity="*" />
           <ReferentialConstraint>
@@ -415,19 +333,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Application">
-              <PropertyRef Name="ProgrammeOfStudyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Application_ApplicationStatusId">
-          <End Type="PGProgrammeApplicationsModel.ApplicationStatu" Role="ApplicationStatu" Multiplicity="1" />
-          <End Type="PGProgrammeApplicationsModel.Application" Role="Application" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ApplicationStatu">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Application">
-              <PropertyRef Name="ApplicationStatusId" />
+              <PropertyRef Name="StudentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -450,23 +356,14 @@
           <EntitySetMapping Name="Applications">
             <EntityTypeMapping TypeName="PGProgrammeApplicationsModel.Application">
               <MappingFragment StoreEntitySet="Application">
-                <ScalarProperty Name="ApplicationStatusId" ColumnName="ApplicationStatusId" />
+                <ScalarProperty Name="ApplicationStatus" ColumnName="ApplicationStatusId" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AdmissionTermId" ColumnName="AdmissionTermId" />
                 <ScalarProperty Name="ProgrammeOfStudyId" ColumnName="ProgrammeOfStudyId" />
-                <ScalarProperty Name="ModeOfStudyId" ColumnName="ModeOfStudyId" />
+                <ScalarProperty Name="ModeOfStudy" ColumnName="ModeOfStudyId" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
                 <ScalarProperty Name="ApplicationTimestamp" ColumnName="ApplicationTimestamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ApplicationStatus">
-            <EntityTypeMapping TypeName="PGProgrammeApplicationsModel.ApplicationStatu">
-              <MappingFragment StoreEntitySet="ApplicationStatus">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="EnumCode" ColumnName="EnumCode" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -486,15 +383,6 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AppUserId" ColumnName="AppUserId" />
                 <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ModeOfStudies">
-            <EntityTypeMapping TypeName="PGProgrammeApplicationsModel.ModeOfStudy">
-              <MappingFragment StoreEntitySet="ModeOfStudy">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="EnumCode" ColumnName="EnumCode" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

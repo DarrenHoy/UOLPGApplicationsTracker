@@ -1,0 +1,39 @@
+﻿@model PGProgrammeApplications.Models.ApplicationViewModel
+
+
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h4>@Html.DisplayFor(model => model.ProgrammeOfStudy)</h4>
+        <h5>@Html.DisplayFor(model => model.AdmissionTerm)</h5>
+    </div>
+    <div class="panel-body">
+        <div>
+            <span><strong>Mode of Study: </strong></span>@Html.DisplayFor(model => model.ModeOfStudy)
+        </div>
+        <div>
+            <span><strong>Application Status:</strong></span> <span class="glyphicon glyphicon-triangle-bottom"></span> <span class="text-info">@Html.DisplayFor(model => model.Status)</span>
+        </div>
+
+        <hr />
+        
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @if (Model.Comments == null || Model.Comments == String.Empty)
+                {
+                    <span>No comments to display</span>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Comments)
+                }
+            </div>
+        </div>
+
+
+    </div>
+    <div class="panel-footer">
+        <span>Application submitted on:</span>@Html.DisplayFor(model => model.Timestamp)
+    </div>
+
+</div>

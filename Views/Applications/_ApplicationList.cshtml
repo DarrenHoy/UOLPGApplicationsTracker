@@ -1,0 +1,6 @@
+﻿@model System.Collections.Generic.List<PGProgrammeApplications.Models.ApplicationViewModel>
+
+@foreach(var application in Model)
+{
+    Html.RenderPartial("_ApplicationCard", application);
+}

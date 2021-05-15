@@ -17,13 +17,34 @@ namespace PGProgrammeApplications.Controllers
         public ApplicationsController() 
         {
             _dbContext = new PGProgrammeApplicationsEntities();
+            
+        }
+
+        private AppIdentity GetUser()
+        {
+            //return (AppIdentity)Request.GetOwinContext().Authentication.User.Identity;
+            var user = _dbContext.Students.FirstOrDefault(s => s.EmailAddress == "steven.lawson@anemailprovider.com");
+            return new AppIdentity(AppIdentityType.Student, user.Id, user.EmailAddress, user.EmailAddress, user.UserPassword, new List<string> { "Student" });
+        }
+
+        private ApplicationViewModel ApplicationViewModelFromApplication(Application a)
+        {
+            return new ApplicationViewModel()
+            {
+                AdmissionTerm = a.AdmissionTerm.Description,
+                ModeOfStudy = a.ModeOfStudy.ToString(),
+                ProgrammeOfStudy = a.ProgrammeOfStudy.Description,
+                Comments = a.Comments,
+                Status = a.ApplicationStatus.ToString(),
+                Timestamp = a.ApplicationTimestamp.ToShortDateString()
+            };
         }
 
         // GET: Applications
-        [Authorize]
+        //[Authorize]
         public ActionResult Index()
         {
-            var appUser = (AppIdentity)Request.GetOwinContext().Authentication.User.Identity;
+            var appUser = GetUser();
 
             //Ensure staff are redirected to the appropriate page
             if (appUser.IdentityType == AppIdentityType.Staff)
@@ -36,16 +57,9 @@ namespace PGProgrammeApplications.Controllers
                     _dbContext
                     .Applications
                     .Where(a => a.Student.EmailAddress == username)
-                    .Select(a => new ApplicationViewModel()
-                    {
-                        AdmissionTerm = a.AdmissionTerm.Description,
-                        ModeOfStudy = a.ModeOfStudy.ToString(),
-                        ProgrammeOfStudy = a.ProgrammeOfStudy.Description,
-                        Comments = a.Comments,
-                        Status = a.ApplicationStatus.ToString(),
-                        Timestamp = a.ApplicationTimestamp.ToShortDateString()
-                    });
-            return View();
+                    .Select(ApplicationViewModelFromApplication)
+                    .ToList();
+            return View(applications);
         }
 
         [Authorize(Roles = "Administrator")]

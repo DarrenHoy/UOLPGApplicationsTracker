@@ -41,12 +41,9 @@ create table AdmissionTerm(
 	EndDate date not null
 );
 
-
-create sequence SQ_ModeOfStudyEnum as int start with 1 increment by 1;
-
 create table ModeOfStudy(
 	Id uniqueidentifier default newid() primary key,
-	EnumCode int default (next value for SQ_ModeOfStudyEnum),
+	EnumCode int not null,
 	Description nvarchar(20),
 
 	constraint UQ_ModeOfStudy_EnumCode unique (EnumCode)
@@ -59,7 +56,6 @@ create table AppUser(
 	DisplayName nvarchar(200),
 	UserPassword nvarchar(100) not null
 );
-
 
 
 create table UserRole(
@@ -77,11 +73,11 @@ create table AppUserRoleMember(
 );
 
 
-create sequence SQ_ApplicationStatusEnum as int start with 1 increment by 1;
+
 
 create table ApplicationStatus(
 	Id uniqueidentifier default newid() primary key,
-	EnumCode int default (next value for SQ_ApplicationStatusEnum),
+	EnumCode int not null,
 	Description nvarchar(50) not null,
 
 	constraint UQ_ApplicationStatus_Description unique (Description),

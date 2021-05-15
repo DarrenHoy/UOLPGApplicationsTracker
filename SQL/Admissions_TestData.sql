@@ -19,11 +19,11 @@ union all select '2021-22','01-SEP-2021','31-AUG-2022'
 union all select '2022-23','01-SEP-2022','31-AUG-2023'
 union all select '2023-24','01-SEP-2023','31-AUG-2024';
 
-insert into ApplicationStatus(Description)
-select 'Submitted'
-union all select 'Under review'
-union all select 'Approved'
-union all select 'Rejected'
+insert into ApplicationStatus(EnumCode, Description)
+select 1, 'Submitted'
+union all select 2, 'Under review'
+union all select 3, 'Approved'
+union all select 4, 'Rejected'
 
 --I am doing a terrible thing and putting passwords into the database in plain text!
 insert into AppUser(Username, DisplayName, UserPassword)
@@ -42,9 +42,9 @@ from
 	from AppUser
 ) as AppRoleMembers;
 
-insert into ModeOfStudy(Description)
-select 'Full time'
-union all select 'Part time'
+insert into ModeOfStudy(EnumCode, Description)
+select 1, 'Full time'
+union all select 2, 'Part time'
 
 insert into ProgrammeOfStudy(Description)
 SELECT 'Town and Regional Planning - Master of Arts (MA)'

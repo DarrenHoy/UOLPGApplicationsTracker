@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cd90e0da644e41f38a67ce7a6af8fde5" Name="Diagram1">
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.AdmissionTerm" Width="1.5" PointX="0.5" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.Application" Width="1.5" PointX="3.125" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.ApplicationStatu" Width="1.5" PointX="5.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.AppUser" Width="2" PointX="5.125" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.AppUserRoleMember" Width="1.5" PointX="7.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.ModeOfStudy" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.ProgrammeOfStudy" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.Student" Width="1.5" PointX="9.375" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.UserRole" Width="1.5" PointX="10.125" PointY="4.875" IsExpanded="true" />
+        <AssociationConnector Association="PGProgrammeApplicationsModel.FK_Application_ApplicationTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="PGProgrammeApplicationsModel.FK_ModeOfStudyId" ManuallyRouted="false" />
+        <AssociationConnector Association="PGProgrammeApplicationsModel.FK_ProgrammeOfStudyId" ManuallyRouted="false" />
+        <AssociationConnector Association="PGProgrammeApplicationsModel.FK_AppUserRoleMember_AppUserId" ManuallyRouted="false" />
+        <AssociationConnector Association="PGProgrammeApplicationsModel.FK_AppUserRoleMember_UserRoleId" ManuallyRouted="false" />
+        <AssociationConnector Association="PGProgrammeApplicationsModel.FK_Application_StudentId" />
+        <AssociationConnector Association="PGProgrammeApplicationsModel.FK_Application_ApplicationStatusId" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

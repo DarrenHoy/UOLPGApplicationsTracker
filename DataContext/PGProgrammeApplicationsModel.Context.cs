@@ -32,5 +32,6 @@ namespace PGProgrammeApplications.DataContext
         public virtual DbSet<ProgrammeOfStudy> ProgrammeOfStudies { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<ApplicationStatu> ApplicationStatus { get; set; }
     }
 }

@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="cd90e0da644e41f38a67ce7a6af8fde5" Name="Diagram1">
         <EntityTypeShape EntityType="PGProgrammeApplicationsModel.AdmissionTerm" Width="1.5" PointX="0.5" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.Application" Width="3" PointX="3.125" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.Application" Width="3" PointX="3.75" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="PGProgrammeApplicationsModel.AppUser" Width="2" PointX="5.125" PointY="4.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PGProgrammeApplicationsModel.AppUserRoleMember" Width="1.5" PointX="7.75" PointY="4.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PGProgrammeApplicationsModel.ProgrammeOfStudy" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
@@ -17,6 +17,8 @@
         <AssociationConnector Association="PGProgrammeApplicationsModel.FK_AppUserRoleMember_AppUserId" ManuallyRouted="false" />
         <AssociationConnector Association="PGProgrammeApplicationsModel.FK_AppUserRoleMember_UserRoleId" ManuallyRouted="false" />
         <AssociationConnector Association="PGProgrammeApplicationsModel.FK_Application_StudentId1" />
+        <EntityTypeShape EntityType="PGProgrammeApplicationsModel.ApplicationStatu" Width="1.5" PointX="7.625" PointY="1" />
+        <AssociationConnector Association="PGProgrammeApplicationsModel.FK_Application_ApplicationStatusId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

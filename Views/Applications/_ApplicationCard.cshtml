@@ -12,7 +12,16 @@
             <span><strong>Mode of Study: </strong></span>@Html.DisplayFor(model => model.ModeOfStudy)
         </div>
         <div>
-            <span><strong>Application Status:</strong></span> <span class="glyphicon glyphicon-triangle-bottom"></span> <span class="text-info">@Html.DisplayFor(model => model.Status)</span>
+            @if (Model.CanChangeStatus)
+            {
+                <span><strong>Application Status:</strong></span>
+                @Html.DropDownListFor(model => model.Status, Model.StatusValues, new { onchange="javascript: changeStatus('" + Model.ApplicationId.ToString() + "')"});
+            }
+            else
+            {
+                <span><strong>Application Status:</strong></span> <span class="glyphicon glyphicon-triangle-bottom"></span> <span class="text-info">@Html.DisplayFor(model => model.Status)</span>
+            }
+
         </div>
 
         <hr />

@@ -21,10 +21,10 @@ namespace PGProgrammeApplications.DataContext
         public string Comments { get; set; }
         public System.DateTime ApplicationTimestamp { get; set; }
         public System.Guid StudentId { get; set; }
-        public ApplicationStatus ApplicationStatus { get; set; }
     
         public virtual AdmissionTerm AdmissionTerm { get; set; }
         public virtual ProgrammeOfStudy ProgrammeOfStudy { get; set; }
         public virtual Student Student { get; set; }
+        public virtual ApplicationStatu Status { get; set; }
     }
 }

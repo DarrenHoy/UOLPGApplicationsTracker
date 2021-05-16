@@ -169,6 +169,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiStartup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -176,6 +177,9 @@
       <DependentUpon>PGProgrammeApplicationsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\Application.cs">
+      <DependentUpon>PGProgrammeApplicationsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\ApplicationStatu.cs">
       <DependentUpon>PGProgrammeApplicationsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContext\ApplicationStatus.cs">

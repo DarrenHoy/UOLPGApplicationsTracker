@@ -37,6 +37,7 @@ namespace PGProgrammeApplications.Models
         {
             return new Application()
             {
+                Id=Guid.NewGuid(),
                 AdmissionTermId = this.AdmissionTermId,
                 ApplicationStatusId = applicationStatusId,
                 ModeOfStudyId = this.ModeOfStudyId,

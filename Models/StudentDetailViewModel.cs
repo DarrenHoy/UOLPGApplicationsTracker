@@ -12,6 +12,10 @@ namespace PGProgrammeApplications.Models
     //Inheriting from Student - means we can just pass this object off to the DataContext for update
     public class StudentDetailViewModel
     {
+        private string _firstName;
+        private string _lastName;
+        private string _emailAddress;
+
         [Key]
         public Guid Id { get; set; }
         public StudentDetailViewModel()
@@ -20,12 +24,12 @@ namespace PGProgrammeApplications.Models
         }
 
         [Required]
-        [Display(Name ="First Name")]
-        public string FirstName { get; set; }
+        [Display(Name = "First Name")]
+        public string FirstName { get { return HttpUtility.HtmlEncode(_firstName); } set { _firstName = value; } }
 
         [Required]
         [Display(Name = "Last Name")]
-        public string LastName { get; set; }
+        public string LastName { get { return HttpUtility.HtmlEncode(_lastName); } set { _lastName = value; } }
 
         /*
          * My effort at an email regex - 
@@ -38,7 +42,7 @@ namespace PGProgrammeApplications.Models
         [Required]
         [RegularExpression(@"^([\d|\w|\.])*@([\w|\d]*)[.]([\w|\d](\.?))*(\w)$", ErrorMessage = "Sorry, it looks like that isn't a valid email address")]
         [Display(Name = "Email Address")]
-        public string EmailAddress { get; set; }
+        public string EmailAddress { get { return HttpUtility.HtmlEncode(_emailAddress); } set { _emailAddress = value; } }
 
         //Pretty sure the model binder will reject invalid dates
         [Required]

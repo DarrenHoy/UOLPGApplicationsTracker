@@ -176,9 +176,7 @@
     <Compile Include="ApiControllers\ApplicationsController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
@@ -234,9 +232,7 @@
     <Compile Include="Models\CreateApplicationViewModel.cs" />
     <Compile Include="Models\StudentDetailViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ApplicationsListViewModel.cs" />
     <Compile Include="ModelValidators\DateValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

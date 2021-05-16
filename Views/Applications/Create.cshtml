@@ -1,66 +1,79 @@
 ﻿@model PGProgrammeApplications.Models.CreateApplicationViewModel
 
 @{
-    ViewBag.Title = "View";
+    ViewBag.Title = "Submit an Application";
 }
 
-<h2>View</h2>
+<style>
+    .comments-box{
+        height:10em;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
 
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>CreateApplicationViewModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        @Html.HiddenFor(model => model.StudentId);
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProgrammeOfStudyId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ProgrammeOfStudyId, Model.Programmes, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProgrammeOfStudyId, "", new { @class = "text-danger" })
-            </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h4>Application Details</h4>
         </div>
+        <div class="panel-body">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.AdmissionTermId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.AdmissionTermId, Model.AdmissionTerms, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AdmissionTermId, "", new { @class = "text-danger" })
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @Html.HiddenFor(model => model.StudentId)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProgrammeOfStudyId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.ProgrammeOfStudyId, Model.Programmes, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ProgrammeOfStudyId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AdmissionTermId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.AdmissionTermId, Model.AdmissionTerms, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.AdmissionTermId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ModeOfStudyId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.ModeOfStudyId, Model.ModesOfStudy, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ModeOfStudyId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control comments-box" } })
+                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
+
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ModeOfStudyId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ModeOfStudyId, Model.ModesOfStudy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ModeOfStudyId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+        <div class="panel-footer">
+            <input type="submit" value="Create" class="btn btn-primary" />
+            @{ 
+                var backUrl = Url.Action("Index", "Home");
+                var onClick = $"javascript: window.location='{backUrl}'; return false;";
+                <span class="btn btn-default" onclick="@onClick">Cancel</span>
+            }
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

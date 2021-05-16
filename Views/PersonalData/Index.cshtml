@@ -1,0 +1,68 @@
+﻿@model PGProgrammeApplications.Models.StudentDetailViewModel
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View Details</h2>
+
+<div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h4>My Details</h4>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.EmailAddress)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.EmailAddress)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateOfBirth)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DateOfBirth)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsUkResident)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.IsUkResidentDisplay)
+                </dd>
+
+            </dl>
+        </div>
+        <div class="panel-footer">
+            @{
+                var url = Url.Action("Edit", new { Id = Model.Id });
+                var editClick = $"javascript: window.location='{url}'";
+                <button class="btn btn-primary" onclick="@editClick">Edit</button>
+            }
+
+        </div>
+    </div>
+</div>
+

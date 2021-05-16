@@ -183,6 +183,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PersonalDataController.cs" />
     <Compile Include="DataContext\AdmissionTerm.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -231,11 +232,13 @@
     <Compile Include="Models\ApplicationViewModel.cs" />
     <Compile Include="Models\ChangeStatusRequest.cs" />
     <Compile Include="Models\CreateApplicationRequest.cs" />
+    <Compile Include="Models\StudentDetailViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ApplicationsListViewModel.cs" />
+    <Compile Include="ModelValidators\DateValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AppIdentity.cs" />
     <Compile Include="Security\AppIdentityType.cs" />
@@ -308,6 +311,7 @@
     <Content Include="Views\Applications\_ApplicationCard.cshtml" />
     <Content Include="Views\Applications\_ApplicationList.cshtml" />
     <Content Include="Views\Applications\Index.cshtml" />
+    <Content Include="Views\PersonalData\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

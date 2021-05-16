@@ -44,7 +44,7 @@ namespace PGProgrammeApplications.Security
                 var student = _dataContext.Students.FirstOrDefault(s => s.EmailAddress == userName);
                 if (student != null)
                 {
-                    return new AppIdentity(AppIdentityType.Student,
+                    return new AppIdentity(
                                         student.Id,
                                         student.EmailAddress, 
                                         student.EmailAddress, 
@@ -55,7 +55,7 @@ namespace PGProgrammeApplications.Security
                 var staff = _dataContext.AppUsers.Include("AppUserRoleMembers.UserRole").FirstOrDefault(s => s.Username == userName);
                 if (staff != null)
                 {
-                    return new AppIdentity(AppIdentityType.Staff, 
+                    return new AppIdentity(
                                             staff.Id,
                                             staff.Username, 
                                             staff.Username, 

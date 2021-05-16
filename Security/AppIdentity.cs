@@ -15,27 +15,21 @@ namespace PGProgrammeApplications.Security
         private string _password;
 
 
-        public AppIdentity(AppIdentityType identityType, Guid databaseId, string id, string username, string password, IEnumerable<string> roles):base(DefaultAuthenticationTypes.ApplicationCookie)
+        public AppIdentity(Guid databaseId, string id, string username, string password, IEnumerable<string> roles):base(DefaultAuthenticationTypes.ApplicationCookie)
         {
             _id = id;
             _username = username;
             _password = password;
-            Roles = new List<string>(roles);
-
-            IdentityType = identityType;
-            DatabaseId = databaseId;
+            
 
             //Requried for the AntiForgeryToken
             AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", "SqlServer"));
             AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", username));
             //Add the roles from the database and the Authorize attribute just works
             AddClaims(roles.Select(r => new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", r)));
+            AddClaim(new Claim("DatabaseId", databaseId.ToString()));
             
         }
-
-        public AppIdentityType IdentityType { get; private set; }
-
-        public Guid DatabaseId { get; private set; }
 
         public string Id => _id;
 
@@ -46,7 +40,7 @@ namespace PGProgrammeApplications.Security
             return _password == password;
         }
 
-        public List<string> Roles { get; }
+        
 
     }
 }

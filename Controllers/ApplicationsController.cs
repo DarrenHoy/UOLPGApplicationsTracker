@@ -20,25 +20,6 @@ namespace PGProgrammeApplications.Controllers
             
         }
 
-        private AppIdentity GetUser()
-        {
-            //return (AppIdentity)Request.GetOwinContext().Authentication.User.Identity;
-            Func<AppIdentity> StudentUser = () =>
-            {
-                var user = _dbContext.Students.FirstOrDefault(s => s.EmailAddress == "steven.lawson@anemailprovider.com");
-                return new AppIdentity(AppIdentityType.Student, user.Id, user.EmailAddress, user.EmailAddress, user.UserPassword, new List<string> { "Student" });
-            };
-
-            Func<AppIdentity> StaffUser = () =>
-            {
-                var user = _dbContext.AppUsers.FirstOrDefault(u => u.Username == "AdminSarah");
-                return new AppIdentity(AppIdentityType.Staff, user.Id, user.Username, user.Username, user.UserPassword, user.AppUserRoleMembers.Select(r => r.UserRole.Description).ToList());
-            };
-
-            return StaffUser();
-            //return StudentUser();
-        }
-
         private Func<Application, ApplicationViewModel> ApplicationViewModelFromApplication(bool canChangeStatus, bool showStudent, IEnumerable<SelectListItem> statusValues)
         {
             return a => 
@@ -65,15 +46,16 @@ namespace PGProgrammeApplications.Controllers
         {
             ViewBag.Title = "My Applications";
 
-            var appUser = GetUser();
+            var appUser = Request.GetOwinContext().Authentication.User;
+            var appIdentity = (ClaimsIdentity)appUser.Identity;
 
             //Ensure staff are redirected to the appropriate action - this configuratin does not make sense for admin users
-            if (appUser.IdentityType == AppIdentityType.Staff)
+            if (appUser.IsInRole("Administrator"))
             {
                 return RedirectToAction("ViewAll");
             }
 
-            var username = appUser.UserName;
+            var username = appIdentity.Name;
             var applications =
                     _dbContext
                     .Applications

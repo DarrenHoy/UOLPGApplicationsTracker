@@ -11,7 +11,8 @@ namespace PGProgrammeApplications.ModelValidators
         public override bool IsValid(object value)
         {
             DateTime date = DateTime.Now;
-            return DateTime.TryParse(value as string, out date);
+            var isValid =  DateTime.TryParse(value as string, out date);
+            return isValid;
         }
     }
 }

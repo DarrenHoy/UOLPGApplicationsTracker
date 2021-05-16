@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace PGProgrammeApplications.Models
 {
-    public class ApplicationViewModel
+    public class EditApplicationViewModel
     {
         public Guid ApplicationId { get; set; }
 

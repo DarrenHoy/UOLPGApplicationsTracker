@@ -49,7 +49,7 @@ namespace PGProgrammeApplications.Controllers
 
             Request.GetOwinContext().Authentication.SignIn(ImpersonateStudent());
             //Request.GetOwinContext().Authentication.SignIn(ImpersonateStaff());
-            return RedirectToAction("Index", "PersonalData", new { });
+            return RedirectToAction("Create", "Applications", new { });
             //return RedirectToAction("Index", "Applications");
         }
     }

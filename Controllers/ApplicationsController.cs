@@ -3,8 +3,10 @@ using PGProgrammeApplications.Models;
 using PGProgrammeApplications.Security;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,10 +22,10 @@ namespace PGProgrammeApplications.Controllers
             
         }
 
-        private Func<Application, ApplicationViewModel> ApplicationViewModelFromApplication(bool canChangeStatus, bool showStudent, IEnumerable<SelectListItem> statusValues)
+        private Func<Application, EditApplicationViewModel> ApplicationViewModelFromApplication(bool canChangeStatus, bool showStudent, IEnumerable<SelectListItem> statusValues)
         {
             return a => 
-                new ApplicationViewModel()
+                new EditApplicationViewModel()
                 {
                     ApplicationId = a.Id,
                     StudentName = a.Student.FirstName + " " + a.Student?.LastName,
@@ -78,6 +80,50 @@ namespace PGProgrammeApplications.Controllers
                     .Select(ApplicationViewModelFromApplication(canChangeStatus: true, showStudent:true, statusValues: statusValues))
                     .ToList();
             return View("Index", applications);
+        }
+
+        public async Task<ActionResult> Create()
+        {
+            var appUser = Request.GetOwinContext().Authentication.User;
+            if (!appUser.IsInRole("Student"))
+            {
+                return RedirectToAction("Index");
+            }
+
+            var studentIdClaim = ((ClaimsIdentity)appUser.Identity).Claims.FirstOrDefault(c => c.Type == "DatabaseId")?.Value;
+
+            //If there is no Database ID on the claim something has gone wrong - need to sign in again
+            if (studentIdClaim == null)
+            {
+                Request.GetOwinContext().Authentication.SignOut();
+                return RedirectToAction("Login", "Account");
+            }
+
+            var studentId = Guid.Parse(studentIdClaim);
+
+            var modesOfStudy = await _dbContext.ModeOfStudies.OrderBy(m=>m.Description).Select(m => new SelectListItem() { Value = m.Id.ToString(), Text = m.Description }).ToListAsync();
+            var programmes = await _dbContext.ProgrammeOfStudies.OrderBy(p=>p.Description).Select(p => new SelectListItem() { Value = p.Id.ToString(), Text = p.Description }).ToListAsync();
+            var admissionTerms = await _dbContext.AdmissionTerms.OrderBy(a=>a.Description).Where(a=>a.StartDate > DateTime.Now).Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Description }).ToListAsync();
+
+            return View(
+                new CreateApplicationViewModel()
+                {
+                    StudentId=studentId,
+                    ModesOfStudy=modesOfStudy,
+                    Programmes=programmes,
+                    AdmissionTerms=admissionTerms
+                });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(CreateApplicationViewModel request)
+        {
+            var defaultStatus = _dbContext.ApplicationStatus.FirstOrDefault(s => s.Description == "Submitted");
+            var application = request.ToApplication(defaultStatus.Id);
+            _dbContext.Applications.Attach(application);
+            _dbContext.Entry(application).State = EntityState.Added;
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
     }
 }

@@ -229,9 +229,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ApplicationViewModel.cs" />
+    <Compile Include="Models\EditApplicationViewModel.cs" />
     <Compile Include="Models\ChangeStatusRequest.cs" />
-    <Compile Include="Models\CreateApplicationRequest.cs" />
+    <Compile Include="Models\CreateApplicationViewModel.cs" />
     <Compile Include="Models\StudentDetailViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -312,6 +312,8 @@
     <Content Include="Views\Applications\_ApplicationList.cshtml" />
     <Content Include="Views\Applications\Index.cshtml" />
     <Content Include="Views\PersonalData\Index.cshtml" />
+    <Content Include="Views\PersonalData\Edit.cshtml" />
+    <Content Include="Views\Applications\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

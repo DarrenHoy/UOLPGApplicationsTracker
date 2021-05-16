@@ -7,19 +7,19 @@ using System.Web;
 
 namespace PGProgrammeApplications.Models
 {
-    public class ApplicationsListViewModel : IEnumerable<ApplicationViewModel>
+    public class ApplicationsListViewModel : IEnumerable<EditApplicationViewModel>
     {
-        private IEnumerable<ApplicationViewModel> _applications;
+        private IEnumerable<EditApplicationViewModel> _applications;
 
         public Student Student { get; private set; }
 
-        public ApplicationsListViewModel(Student student, IEnumerable<ApplicationViewModel> applications)
+        public ApplicationsListViewModel(Student student, IEnumerable<EditApplicationViewModel> applications)
         {
             _applications = applications;
             Student = student;
         }
 
-        public IEnumerator<ApplicationViewModel> GetEnumerator()
+        public IEnumerator<EditApplicationViewModel> GetEnumerator()
         {
             return _applications.GetEnumerator();
         }

@@ -9,9 +9,9 @@ using System.Web.Mvc;
 
 namespace PGProgrammeApplications.Models
 {
+    //Inheriting from Student - means we can just pass this object off to the DataContext for update
     public class StudentDetailViewModel
     {
-     
         [Key]
         public Guid Id { get; set; }
         public StudentDetailViewModel()
@@ -33,18 +33,20 @@ namespace PGProgrammeApplications.Models
          * - followed by an @
          * - followed by any combination of characters, plus at least one dot
          * - followed by any combination of characters (with an optional dot at the end of the group)
-         * - at least one word character as the last
+         * - with at least one word character as the last
          */
         [Required]
-        [RegularExpression(@"^([\d|\w|\.])*@([\w|\d]*)[.]([\w|\d](\.?))*(\w)$")]
+        [RegularExpression(@"^([\d|\w|\.])*@([\w|\d]*)[.]([\w|\d](\.?))*(\w)$", ErrorMessage = "Sorry, it looks like that isn't a valid email address")]
         [Display(Name = "Email Address")]
         public string EmailAddress { get; set; }
 
-        //Just let DateTime.TryParse handle this one!
+        //Pretty sure the model binder will reject invalid dates
         [Required]
-        [DateValidator]
         [Display(Name = "Date of Birth")]
-        public string DateOfBirth { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        public DateTime DateOfBirth { get; set; }
+
+        public string DisplayDateOfBirth { get; set; }
 
         [Required]
         [RegularExpression("Y|N")]
@@ -53,5 +55,7 @@ namespace PGProgrammeApplications.Models
 
         public List<SelectListItem> ResidencyOptions { get; }
         public string IsUkResidentDisplay { get; internal set; }
+
+        
     }
 }

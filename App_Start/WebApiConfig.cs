@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 
 namespace PGProgrammeApplications.App_Start
 {
@@ -9,7 +10,7 @@ namespace PGProgrammeApplications.App_Start
     {
         public static void Register(HttpConfiguration config)
         {
-
+            config.Routes.MapHttpRoute("defaultApi", "api/{controller}/{id}");
         }
     }
 }

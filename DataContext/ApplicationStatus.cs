@@ -10,12 +10,20 @@
 namespace PGProgrammeApplications.DataContext
 {
     using System;
+    using System.Collections.Generic;
     
-    public enum ApplicationStatus : int
+    public partial class ApplicationStatus
     {
-        Submitted = 1,
-        UnderReview = 2,
-        Approved = 3,
-        Rejected = 4
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ApplicationStatus()
+        {
+            this.Applications = new HashSet<Application>();
+        }
+    
+        public int Id { get; set; }
+        public string Description { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Application> Applications { get; set; }
     }
 }

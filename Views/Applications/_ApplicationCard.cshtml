@@ -4,6 +4,10 @@
 
 <div class="panel panel-info">
     <div class="panel-heading">
+        @if (Model.IsStudentVisible)
+        {
+        <h4>@Html.DisplayFor(model => model.StudentName)</h4>
+        }
         <h4>@Html.DisplayFor(model => model.ProgrammeOfStudy)</h4>
         <h5>@Html.DisplayFor(model => model.AdmissionTerm)</h5>
     </div>
@@ -15,21 +19,41 @@
             @if (Model.CanChangeStatus)
             {
                 <span><strong>Application Status:</strong></span>
-                @Html.DropDownListFor(model => model.Status, Model.StatusValues, new { onchange="javascript: changeStatus('" + Model.ApplicationId.ToString() + "')"});
+                @Html.DropDownListFor(model => model.Status, Model.StatusValues, new { onchange = "javascript: changeStatus(this, '" + Model.ApplicationId.ToString() + "')" });
+                <span style="display:none;" class="text-success">Status Changed!</span>
+                <span style="display:none;" class="text-danger">Oops, something went wrong</span>
+
             }
             else
             {
-                <span><strong>Application Status:</strong></span> <span class="glyphicon glyphicon-triangle-bottom"></span> <span class="text-info">@Html.DisplayFor(model => model.Status)</span>
+                <span><strong>Application Status:</strong></span>
+                switch (Model.DisplayStatus)
+                {
+                    case "Submitted":
+                        <span class="glyphicon glyphicon-circle-arrow-down text-muted"></span>
+                        break;
+                    case "Under review":
+                        <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                        break;
+                    case "Approved":
+                        <span class="glyphicon glyphicon-ok text-success"></span>
+                        break;
+                    case "Rejected":
+                        <span class="glyphicon glyphicon-remove text-danger"></span>
+                        break;
+                }
+                @Html.DisplayFor(model => model.DisplayStatus)
             }
 
         </div>
 
         <hr />
-        
+
+
         <div class="panel panel-default">
             <div class="panel-body">
                 @if (Model.Comments == null || Model.Comments == String.Empty)
-                {
+                    {
                     <span>No comments to display</span>
                 }
                 else

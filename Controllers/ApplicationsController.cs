@@ -23,7 +23,7 @@ namespace PGProgrammeApplications.Controllers
         private AppIdentity GetUser()
         {
             //return (AppIdentity)Request.GetOwinContext().Authentication.User.Identity;
-            Func<AppIdentity> GetStudentUser = () =>
+            Func<AppIdentity> StudentUser = () =>
             {
                 var user = _dbContext.Students.FirstOrDefault(s => s.EmailAddress == "steven.lawson@anemailprovider.com");
                 return new AppIdentity(AppIdentityType.Student, user.Id, user.EmailAddress, user.EmailAddress, user.UserPassword, new List<string> { "Student" });
@@ -36,18 +36,22 @@ namespace PGProgrammeApplications.Controllers
             };
 
             return StaffUser();
+            //return StudentUser();
         }
 
-        private Func<Application, ApplicationViewModel> ApplicationViewModelFromApplication(bool canChangeStatus, IEnumerable<SelectListItem> statusValues)
+        private Func<Application, ApplicationViewModel> ApplicationViewModelFromApplication(bool canChangeStatus, bool showStudent, IEnumerable<SelectListItem> statusValues)
         {
             return a => 
                 new ApplicationViewModel()
                 {
                     ApplicationId = a.Id,
+                    StudentName = a.Student.FirstName + " " + a.Student?.LastName,
+                    IsStudentVisible = showStudent,
                     AdmissionTerm = a.AdmissionTerm.Description,
-                    ModeOfStudy = a.ModeOfStudy.ToString(),
+                    ModeOfStudy = a.ModeOfStudy.Description,
                     ProgrammeOfStudy = a.ProgrammeOfStudy.Description,
                     Comments = a.Comments,
+                    Status = a.Status.Id,
                     StatusValues = statusValues,
                     DisplayStatus = a.Status.Description,
                     Timestamp = a.ApplicationTimestamp.ToShortDateString(),
@@ -56,7 +60,7 @@ namespace PGProgrammeApplications.Controllers
         }
 
         // GET: Applications
-        //[Authorize]
+        [Authorize]
         public ActionResult Index()
         {
             ViewBag.Title = "My Applications";
@@ -73,22 +77,23 @@ namespace PGProgrammeApplications.Controllers
             var applications =
                     _dbContext
                     .Applications
+                    .Include("Status")
                     .Where(a => a.Student.EmailAddress == username)
-                    .Select(ApplicationViewModelFromApplication(canChangeStatus: false, statusValues: new List<SelectListItem>()))
+                    .Select(ApplicationViewModelFromApplication(canChangeStatus: false, showStudent: false, statusValues: new List<SelectListItem>()))
                     .ToList();
             return View(applications);
         }
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult ViewAll()
         {
             ViewBag.Title = "All Applications";
 
-            var statusValues = _dbContext.ApplicationStatus.Select(s => new SelectListItem() { Value = s.Id.ToString(), Text = s.Description }).ToList();
+            var statusValues = _dbContext.ApplicationStatus.Include("Status").Select(s => new SelectListItem() { Value = s.Id.ToString(), Text = s.Description }).ToList();
             var applications =
                     _dbContext
                     .Applications
-                    .Select(ApplicationViewModelFromApplication(canChangeStatus: true, statusValues: statusValues))
+                    .Select(ApplicationViewModelFromApplication(canChangeStatus: true, showStudent:true, statusValues: statusValues))
                     .ToList();
             return View("Index", applications);
         }

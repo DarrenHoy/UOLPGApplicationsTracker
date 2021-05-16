@@ -10,6 +10,8 @@ namespace PGProgrammeApplications.Models
     {
         public Guid ApplicationId { get; set; }
 
+        public string StudentName { get; set; }
+
         public string AdmissionTerm { get; set; }
 
         public string ProgrammeOfStudy { get; set; }
@@ -20,11 +22,13 @@ namespace PGProgrammeApplications.Models
 
         public string Timestamp { get; set; }
 
-        public SelectListItem Status { get; set; }
+        public int Status { get; set; }
 
         public string DisplayStatus { get; set; }
 
         public bool CanChangeStatus { get; set; }
+
+        public bool IsStudentVisible { get; set; }
 
         public IEnumerable<SelectListItem> StatusValues;
 

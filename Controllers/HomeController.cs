@@ -11,8 +11,6 @@ namespace PGProgrammeApplications.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private PGProgrammeApplicationsEntities _dataContext;
-
         [Authorize]
         public ActionResult Index()
         {

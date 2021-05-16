@@ -10,10 +10,20 @@
 namespace PGProgrammeApplications.DataContext
 {
     using System;
+    using System.Collections.Generic;
     
-    public enum ModeOfStudy : int
+    public partial class ModeOfStudy
     {
-        FullTime = 1,
-        PartTime = 2
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ModeOfStudy()
+        {
+            this.Applications = new HashSet<Application>();
+        }
+    
+        public int Id { get; set; }
+        public string Description { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Application> Applications { get; set; }
     }
 }

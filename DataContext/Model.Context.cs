@@ -27,11 +27,12 @@ namespace PGProgrammeApplications.DataContext
     
         public virtual DbSet<AdmissionTerm> AdmissionTerms { get; set; }
         public virtual DbSet<Application> Applications { get; set; }
+        public virtual DbSet<ApplicationStatus> ApplicationStatus { get; set; }
         public virtual DbSet<AppUser> AppUsers { get; set; }
         public virtual DbSet<AppUserRoleMember> AppUserRoleMembers { get; set; }
+        public virtual DbSet<ModeOfStudy> ModeOfStudies { get; set; }
         public virtual DbSet<ProgrammeOfStudy> ProgrammeOfStudies { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
-        public virtual DbSet<ApplicationStatu> ApplicationStatus { get; set; }
     }
 }

@@ -9,3 +9,36 @@
     @Html.Partial("_ApplicationList", Model)
 </div>
 
+@section Scripts{
+
+    <script>
+        var reportError =
+            function (sender) {
+                return xhr => {
+                    var msg = $(sender).siblings('[class="text-danger"]');
+                    msg.fadeIn('fast');
+                }
+            }
+
+        var success = function (sender) {
+            return () => {
+                var msg = $(sender).siblings('[class="text-success"]');
+                var hide = () => setTimeout(() => msg.fadeOut('fast'), 2000);
+                msg.fadeIn('slow', hide);
+            }
+        }
+
+        var changeStatus = function (sender, applicationId) {
+            var status = sender.value;
+            var postData = JSON.stringify({ Status: status });
+            $.post({
+                url: "/api/Applications/" + applicationId,
+                data: postData,
+                headers: { "Content-Type":"application/json" }
+            }).then(success(sender), reportError(sender));
+        }
+
+    </script>    
+    
+}
+

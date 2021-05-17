@@ -57,7 +57,7 @@
         </div>
         <div class="panel-footer">
             @{
-                var url = Url.Action("Edit", new { Id = Model.Id });
+                var url = Url.Action("Edit", new { id = Model.Id.ToString() });
                 var editClick = $"javascript: window.location='{url}'";
                 <button class="btn btn-primary" onclick="@editClick">Edit</button>
             }

@@ -10,7 +10,10 @@ namespace PGProgrammeApplications.App_Start
     {
         public static void Register(HttpConfiguration config)
         {
-            config.Routes.MapHttpRoute("defaultApi", "api/{controller}/{id}");
+            config.Routes.MapHttpRoute(
+                name:"defaultApi", 
+                routeTemplate: "api/{controller}/{id}", 
+                defaults: new { id = RouteParameter.Optional });
         }
     }
 }

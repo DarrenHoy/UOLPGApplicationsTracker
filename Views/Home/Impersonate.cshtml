@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Impersonate";
+}
+
+<style>
+    .impersonation-item {
+        margin-bottom: 1em;
+    }
+
+    .impersonation-item > input{
+        width: 20em;
+    }
+</style>
+
+<h2>Impersonate</h2>
+
+<hr />
+@using (Html.BeginForm("Impersonate", "Home"))
+{
+    <input type="hidden" name="userType" value="Student" />
+    <div>
+        <h3>Students</h3>
+        <div class="impersonation-item">
+            <input type="submit" name="user" value="steven.lawson@anemailprovider.com" />
+        </div>
+        <div class="impersonation-item">
+            <input type="submit" name="user" value="tianna.villa@foobar.ac.uk" />
+        </div>
+        <div class="impersonation-item">
+            <input type="submit" name="user" value="kendall.ingram@foobar.ac.uk" />
+        </div>
+    </div>
+}
+
+<hr />
+
+@using (Html.BeginForm("Impersonate", "Home"))
+{
+    <input type="hidden" name="userType" value="Staff" />
+    <div>
+        <h3>Staff</h3>
+        <div class="impersonation-item">
+            <input type="submit" name="user" value="AdminSarah" />
+        </div>
+        <div class="impersonation-item">
+            <input type="submit" name="user" value="AdminBob" />
+        </div>
+        <div class="impersonation-item">
+            <input type="submit" name="user" value="AdminJane" />
+        </div>
+    </div>
+}

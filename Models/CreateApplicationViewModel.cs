@@ -11,9 +11,6 @@ namespace PGProgrammeApplications.Models
 {
     public class CreateApplicationViewModel
     {
-        
-        public Guid StudentId { get; set; }
-
         [Required(ErrorMessage ="An Admission Term is required")]
         [Display(Name ="Admission Term")]
         public Guid AdmissionTermId { get; set; }
@@ -33,7 +30,7 @@ namespace PGProgrammeApplications.Models
         public IEnumerable<SelectListItem> ModesOfStudy { get; set; }
 
 
-        public Application ToApplication(int applicationStatusId)
+        public Application ToApplication(Guid studentId, int applicationStatusId)
         {
             return new Application()
             {
@@ -42,7 +39,7 @@ namespace PGProgrammeApplications.Models
                 ApplicationStatusId = applicationStatusId,
                 ModeOfStudyId = this.ModeOfStudyId,
                 ProgrammeOfStudyId = this.ProgrammeOfStudyId,
-                StudentId = this.StudentId,
+                StudentId = studentId,
                 ApplicationTimestamp = DateTime.Now,
                 Comments = this.Comments
             };

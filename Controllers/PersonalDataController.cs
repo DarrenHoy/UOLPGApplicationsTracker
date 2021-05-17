@@ -1,4 +1,5 @@
 ﻿using PGProgrammeApplications.DataContext;
+using PGProgrammeApplications.Filters;
 using PGProgrammeApplications.Models;
 using PGProgrammeApplications.Security;
 using System;
@@ -12,6 +13,7 @@ using System.Web.Mvc;
 
 namespace PGProgrammeApplications.Controllers
 {
+    [Authorize]
     public class PersonalDataController : Controller
     {
         private PGProgrammeApplicationsEntities _db;
@@ -23,39 +25,33 @@ namespace PGProgrammeApplications.Controllers
         }
 
         // GET: Personal
-        public async Task<ActionResult> Index()
+        [RowLevelAuth(ExcludeRoles: "Administrator")]
+        public async Task<ActionResult> Detail(Guid? id)
         {
-            var sessionUser = Request.GetOwinContext().Authentication.User;
-            var sessionIdentity = (ClaimsIdentity)sessionUser.Identity;
-
-            if (sessionUser.IsInRole("Administrator"))
+            if (!id.HasValue)
             {
-                var students = await Task.Run(() => _db.Students.ToList());
-                return View(students);
+                return HttpNotFound();
             }
 
-            var student = await _db.Students.FindAsync(Guid.Parse(sessionUser.Claims.FirstOrDefault(c=>c.Type=="DatabaseId").Value));
+            var student = await _db.Students.FindAsync(id.Value);
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
             
             return View(CreateViewModel(student));
         }
 
-        
 
-        public async Task<ActionResult> Edit ()
+        [RowLevelAuth(ExcludeRoles: "Administrator")]
+        public async Task<ActionResult> Edit (Guid? id)
         {
-            var user = Request.GetOwinContext().Authentication.User;
-            var studentIdClaim = ((ClaimsIdentity)user.Identity).Claims.FirstOrDefault(c => c.Type == "DatabaseId")?.Value;
-
-            if (studentIdClaim == null)
+            if(!id.HasValue)
             {
-                Request.GetOwinContext().Authentication.SignOut();
-                return RedirectToAction("Login", "Account");
+                return HttpNotFound();
             }
-
-            var studentId = Guid.Parse(studentIdClaim);
             
-            
-            var student = await _db.Students.FindAsync(studentId);
+            var student = await _db.Students.FindAsync(id.Value);
             if (student == null)
             {
                 return new HttpNotFoundResult();
@@ -65,25 +61,30 @@ namespace PGProgrammeApplications.Controllers
         }
 
         [HttpPost]
+        [RowLevelAuth(ExcludeRoles: "Administrator")]
         public async Task<ActionResult> Edit(Guid? id, StudentDetailViewModel request)
         {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(request);
             }
 
-
             var student = await _db.Students.FindAsync(id);
+            
             student.FirstName = request.FirstName;
             student.LastName = request.LastName;
             student.EmailAddress = request.EmailAddress;
             student.DateOfBirth = request.DateOfBirth;
             student.IsUkResident = request.IsUkResident;
             await _db.SaveChangesAsync();
-            
 
-            return RedirectToAction("Index");
 
+            return RedirectToAction("Detail", new { Id = id.Value });
         }
 
         private StudentDetailViewModel CreateViewModel(Student student)

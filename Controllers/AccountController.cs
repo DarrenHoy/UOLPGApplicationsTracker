@@ -45,18 +45,29 @@ namespace PGProgrammeApplications.Controllers
                 return View(model);
             }
 
+            /*
+             * This might seem a bit ostentatious for a demo app, but it buys quite a lot in
+             * terms of the ability to use the standard [Authorize(Roles="...")] attributes as well the ability
+             * to attach arbitrary data (i.e. the DatabaseId claim) to the authentication cookie.  This is really
+             * useful in the ability to abstact the logic of the [RowLevelAuth] attribute out of the controller,
+             * because the identity system is managing it and just implicitly passing that data along with every request.
+             * 
+             * Also, it becomes quite trivial to hand over this methodology to an external Claims provider - you
+             * just have the provider attach the DatabaseId claim
+             */
+
             var owinContext = Request.GetOwinContext();
 
             var user = await _userManager.FindByNameAsync(model.Username);
             if (user.IsPasswordValid(model.Password))
             {
                 owinContext.Authentication.SignIn(user);
-                if (returnUrl != null)
+                if (returnUrl == null)
                 {
-                    return new RedirectResult(returnUrl);
+                    return RedirectToAction("Index", "Home", new { });
                 }
 
-                return RedirectToAction("Index", "Home", new { });
+                return new RedirectResult(returnUrl);
             }
 
 

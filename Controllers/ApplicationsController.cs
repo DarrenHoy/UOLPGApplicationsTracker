@@ -1,4 +1,5 @@
 ﻿using PGProgrammeApplications.DataContext;
+using PGProgrammeApplications.Filters;
 using PGProgrammeApplications.Models;
 using PGProgrammeApplications.Security;
 using System;
@@ -12,6 +13,7 @@ using System.Web.Mvc;
 
 namespace PGProgrammeApplications.Controllers
 {
+    [Authorize]
     public class ApplicationsController : Controller
     {
         private PGProgrammeApplicationsEntities _dbContext;
@@ -43,33 +45,28 @@ namespace PGProgrammeApplications.Controllers
         }
 
         // GET: Applications
-        [Authorize]
-        public ActionResult Index()
+        [RowLevelAuth(ExcludeRoles: "Administrator")]
+        public ActionResult Student(Guid? id)
         {
-            ViewBag.Title = "My Applications";
-
-            var appUser = Request.GetOwinContext().Authentication.User;
-            var appIdentity = (ClaimsIdentity)appUser.Identity;
-
-            //Ensure staff are redirected to the appropriate action - this configuratin does not make sense for admin users
-            if (appUser.IsInRole("Administrator"))
+            if (!id.HasValue)
             {
-                return RedirectToAction("ViewAll");
+                return HttpNotFound();
             }
 
-            var username = appIdentity.Name;
+            ViewBag.Title = "My Applications";
+            
             var applications =
                     _dbContext
                     .Applications
                     .Include("Status")
-                    .Where(a => a.Student.EmailAddress == username)
+                    .Where(a => a.Student.Id == id.Value)
                     .Select(ApplicationViewModelFromApplication(canChangeStatus: false, showStudent: false, statusValues: new List<SelectListItem>()))
                     .ToList();
-            return View(applications);
+            return View("Index",applications);
         }
 
         [Authorize(Roles = "Administrator")]
-        public ActionResult ViewAll()
+        public ActionResult Index()
         {
             ViewBag.Title = "All Applications";
 
@@ -82,24 +79,15 @@ namespace PGProgrammeApplications.Controllers
             return View("Index", applications);
         }
 
-        public async Task<ActionResult> Create()
+        [RowLevelAuth(ExcludeRoles: "Administrator")]
+        public async Task<ActionResult> Create(Guid? id)
         {
-            var appUser = Request.GetOwinContext().Authentication.User;
-            if (!appUser.IsInRole("Student"))
+            if (!id.HasValue)
             {
-                return RedirectToAction("Index");
+                return HttpNotFound();
             }
 
-            var studentIdClaim = ((ClaimsIdentity)appUser.Identity).Claims.FirstOrDefault(c => c.Type == "DatabaseId")?.Value;
-
-            //If there is no Database ID on the claim something has gone wrong - need to sign in again
-            if (studentIdClaim == null)
-            {
-                Request.GetOwinContext().Authentication.SignOut();
-                return RedirectToAction("Login", "Account");
-            }
-
-            var studentId = Guid.Parse(studentIdClaim);
+            var studentId = id.Value;
 
             var modesOfStudy = await _dbContext.ModeOfStudies.OrderBy(m=>m.Description).Select(m => new SelectListItem() { Value = m.Id.ToString(), Text = m.Description }).ToListAsync();
             var programmes = await _dbContext.ProgrammeOfStudies.OrderBy(p=>p.Description).Select(p => new SelectListItem() { Value = p.Id.ToString(), Text = p.Description }).ToListAsync();
@@ -108,7 +96,6 @@ namespace PGProgrammeApplications.Controllers
             return View(
                 new CreateApplicationViewModel()
                 {
-                    StudentId=studentId,
                     ModesOfStudy=modesOfStudy,
                     Programmes=programmes,
                     AdmissionTerms=admissionTerms
@@ -116,14 +103,20 @@ namespace PGProgrammeApplications.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(CreateApplicationViewModel request)
+        [RowLevelAuth(ExcludeRoles: "Administrator")]
+        public async Task<ActionResult> Create(Guid? id, CreateApplicationViewModel request)
         {
+            if (!id.HasValue)
+            {
+                return HttpNotFound();
+            }
+            
             var defaultStatus = _dbContext.ApplicationStatus.FirstOrDefault(s => s.Description == "Submitted");
-            var application = request.ToApplication(defaultStatus.Id);
+            var application = request.ToApplication(id.Value, defaultStatus.Id);
             _dbContext.Applications.Attach(application);
             _dbContext.Entry(application).State = EntityState.Added;
             await _dbContext.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Student", new { id = id });
         }
     }
 }

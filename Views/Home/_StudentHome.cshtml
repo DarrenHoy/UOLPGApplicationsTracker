@@ -1,0 +1,44 @@
+﻿@model PGProgrammeApplications.Models.HomeViewModel
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h4>Menu</h4>
+    </div>
+    <div class="panel-body">
+        <div class="btn-group btn-group-lg btn-group-vertical">
+            @{
+                var link = Url.Action("Detail", "PersonalData", new { id = Model.StudentId });
+                var linkAction = $"javascript: window.location='{link}'";
+                <button type="button" class="btn btn-default" onclick="@linkAction">Personal Details</button>
+            }
+            <button type="button" class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Apply <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @Html.ActionLink("My Applications", "Student", "Applications", new { id = Model.StudentId }, new { })
+                </li>
+                @if (Model.CanApply)
+                {
+                    <li>
+                        @Html.ActionLink("Make Aplication", "Create", "Applications", new { id = Model.StudentId }, new { })
+                    </li>
+                }
+            </ul>
+        </div>
+
+    </div>
+
+
+
+    <div id="news-feed" ng-controller="NewsFeedController">
+        <div ng-repeat="story in stories">
+
+            <h4>{{story.headline}}</h4>
+        </div>
+    </div>
+
+    
+
+</div>

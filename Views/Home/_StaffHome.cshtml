@@ -1,0 +1,9 @@
+﻿@model PGProgrammeApplications.Models.HomeViewModel
+
+<div class="btn-group btn-group-lg btn-group-vertical">
+    @{
+        var link = Url.Action("Index", "Applications");
+        var linkAction = $"javascript: window.location='{link}'";
+        <button type="button" class="btn btn-default" onclick="@linkAction">View/Approve Applications</button>
+    }
+</div>

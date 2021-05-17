@@ -10,7 +10,7 @@ namespace PGProgrammeApplications.Models
     {
         public Guid ApplicationId { get; set; }
 
-        public string StudentName { get; set; }
+        public string StudentName { get => HttpUtility.HtmlEncode(_studentName); set => _studentName = value; }
 
         public string AdmissionTerm { get; set; }
 
@@ -18,7 +18,7 @@ namespace PGProgrammeApplications.Models
 
         public string ModeOfStudy { get; set; }
 
-        public string Comments { get; set; }
+        public string Comments { get => HttpUtility.HtmlEncode(_comments); set => _comments = value; }
 
         public string Timestamp { get; set; }
 
@@ -31,6 +31,7 @@ namespace PGProgrammeApplications.Models
         public bool IsStudentVisible { get; set; }
 
         public IEnumerable<SelectListItem> StatusValues;
-
+        private string _studentName;
+        private string _comments;
     }
 }

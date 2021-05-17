@@ -10,10 +10,15 @@ namespace PGProgrammeApplications.Filters
     /// <summary>
     /// Applies row-level security against the DatabaseId claim for a given method. The method must require an Id parameter of type GUID.  Users in roles identified by ExcludeRoles skip all row-level security checks.
     /// </summary>
+    
     public class RowLevelAuth : System.Web.Mvc.AuthorizeAttribute
     {
         private IEnumerable<string> _excludeRoles;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="ExcludeRoles">Users in any role listed here are excluded from row-level security restrictions; they have full access</param>
         public RowLevelAuth(params string[] ExcludeRoles)
         {
             _excludeRoles = new List<string>(ExcludeRoles);

@@ -11,11 +11,11 @@ namespace PGProgrammeApplications.Security
 {
     public class DatabaseUserStore : IUserStore<AppIdentity>
     {
-        private PGProgrammeApplicationsEntities _dataContext;
+        private PGProgrammeApplicationsEntities _db;
 
         public DatabaseUserStore()
         {
-            _dataContext = new PGProgrammeApplicationsEntities();
+            _db = new PGProgrammeApplicationsEntities();
         }
         public Task CreateAsync(AppIdentity user)
         {
@@ -41,7 +41,7 @@ namespace PGProgrammeApplications.Security
         public async Task<AppIdentity> FindByNameAsync(string userName)
         {
             return await Task.Run(() => { 
-                var student = _dataContext.Students.FirstOrDefault(s => s.EmailAddress == userName);
+                var student = _db.Students.FirstOrDefault(s => s.Username == userName);
                 if (student != null)
                 {
                     return new AppIdentity(
@@ -52,7 +52,7 @@ namespace PGProgrammeApplications.Security
                                         new List<string> { "Student" });
                 }
 
-                var staff = _dataContext.AppUsers.Include("AppUserRoleMembers.UserRole").FirstOrDefault(s => s.Username == userName);
+                var staff = _db.AppUsers.Include("AppUserRoleMembers.UserRole").FirstOrDefault(s => s.Username == userName);
                 if (staff != null)
                 {
                     return new AppIdentity(

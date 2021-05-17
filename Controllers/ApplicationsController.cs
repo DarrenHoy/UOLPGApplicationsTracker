@@ -16,11 +16,11 @@ namespace PGProgrammeApplications.Controllers
     [Authorize]
     public class ApplicationsController : Controller
     {
-        private PGProgrammeApplicationsEntities _dbContext;
+        private PGProgrammeApplicationsEntities _db;
 
         public ApplicationsController() 
         {
-            _dbContext = new PGProgrammeApplicationsEntities();
+            _db = new PGProgrammeApplicationsEntities();
             
         }
 
@@ -56,7 +56,7 @@ namespace PGProgrammeApplications.Controllers
             ViewBag.Title = "My Applications";
             
             var applications =
-                    _dbContext
+                    _db
                     .Applications
                     .Include("Status")
                     .Where(a => a.Student.Id == id.Value)
@@ -70,9 +70,9 @@ namespace PGProgrammeApplications.Controllers
         {
             ViewBag.Title = "All Applications";
 
-            var statusValues = _dbContext.ApplicationStatus.Include("Status").Select(s => new SelectListItem() { Value = s.Id.ToString(), Text = s.Description }).ToList();
+            var statusValues = _db.ApplicationStatus.Include("Status").Select(s => new SelectListItem() { Value = s.Id.ToString(), Text = s.Description }).ToList();
             var applications =
-                    _dbContext
+                    _db
                     .Applications
                     .Select(ApplicationViewModelFromApplication(canChangeStatus: true, showStudent:true, statusValues: statusValues))
                     .ToList();
@@ -89,9 +89,9 @@ namespace PGProgrammeApplications.Controllers
 
             var studentId = id.Value;
 
-            var modesOfStudy = await _dbContext.ModeOfStudies.OrderBy(m=>m.Description).Select(m => new SelectListItem() { Value = m.Id.ToString(), Text = m.Description }).ToListAsync();
-            var programmes = await _dbContext.ProgrammeOfStudies.OrderBy(p=>p.Description).Select(p => new SelectListItem() { Value = p.Id.ToString(), Text = p.Description }).ToListAsync();
-            var admissionTerms = await _dbContext.AdmissionTerms.OrderBy(a=>a.Description).Where(a=>a.StartDate > DateTime.Now).Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Description }).ToListAsync();
+            var modesOfStudy = await _db.ModeOfStudies.OrderBy(m=>m.Description).Select(m => new SelectListItem() { Value = m.Id.ToString(), Text = m.Description }).ToListAsync();
+            var programmes = await _db.ProgrammeOfStudies.OrderBy(p=>p.Description).Select(p => new SelectListItem() { Value = p.Id.ToString(), Text = p.Description }).ToListAsync();
+            var admissionTerms = await _db.AdmissionTerms.OrderBy(a=>a.Description).Where(a=>a.StartDate > DateTime.Now).Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Description }).ToListAsync();
 
             return View(
                 new CreateApplicationViewModel()
@@ -111,12 +111,18 @@ namespace PGProgrammeApplications.Controllers
                 return HttpNotFound();
             }
             
-            var defaultStatus = _dbContext.ApplicationStatus.FirstOrDefault(s => s.Description == "Submitted");
+            var defaultStatus = _db.ApplicationStatus.FirstOrDefault(s => s.Description == "Submitted");
             var application = request.ToApplication(id.Value, defaultStatus.Id);
-            _dbContext.Applications.Attach(application);
-            _dbContext.Entry(application).State = EntityState.Added;
-            await _dbContext.SaveChangesAsync();
+            _db.Applications.Attach(application);
+            _db.Entry(application).State = EntityState.Added;
+            await _db.SaveChangesAsync();
             return RedirectToAction("Student", new { id = id });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _db.Dispose();
         }
     }
 }

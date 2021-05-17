@@ -241,7 +241,6 @@
     <Compile Include="Security\AppIdentity.cs" />
     <Compile Include="Security\AppIdentityType.cs" />
     <Compile Include="Security\DatabaseUserStore.cs" />
-    <Compile Include="Security\IUserStore.cs" />
     <Compile Include="Security\UserManager.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

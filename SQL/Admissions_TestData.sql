@@ -200,12 +200,16 @@ SELECT 'Town and Regional Planning - Master of Arts (MA)'
 
 
 
-insert into Student(FirstName, LastName, DateOfBirth, EmailAddress, IsUkResident, UserPassword)
-select 'STEVEN','LAWSON',CONVERT(datetime, '16/12/1977', 103),'steven.lawson@anemailprovider.com','Y','password123'
-union all select 'KAREN','DE-PETRO',CONVERT(datetime, '05/02/1956', 103),'karen.de-petro@anemailprovider.com','Y','password123'
-union all select 'CLARE','MANN',CONVERT(datetime, '03/04/1986', 103),'clare.mann@foobar.ac.uk','Y','password123'
-union all select 'AMBER','HART',CONVERT(datetime, '05/04/1997', 103),'amber.hart@foobar.ac.uk','Y','password123'
-union all select 'BRETT','ROY', CONVERT(datetime, '24/06/1968', 103),'brett.roy@foobar.ac.uk','Y','password123'
+insert into Student(FirstName, LastName, DateOfBirth, EmailAddress, IsUkResident, Username, UserPassword)
+select 'STEVEN','LAWSON',CONVERT(datetime, '16/12/1977', 103),'steven.lawson@anemailprovider.com','Y','steven.lawson@anemailprovider.com','password123'
+union all select 'KAREN','DE-PETRO',CONVERT(datetime, '05/02/1956', 103),'karen.de-petro@anemailprovider.com','Y','karen.de-petro@anemailprovider.com','password123'
+union all select 'KATE','WHITEING',CONVERT(datetime, '16/06/1972', 103),'kate.whiteing@barfoo.co.uk','N','kate.whiteing@barfoo.co.uk', 'password123'
+union all select 'CLARE','MANN',CONVERT(datetime, '03/04/1986', 103),'clare.mann@foobar.ac.uk','Y','clare.mann@foobar.ac.uk','password123'
+union all select 'TIANNA','VILLA',CONVERT(datetime, '30/09/1994', 103),'tianna.villa@foobar.ac.uk','Y','tianna.villa@foobar.ac.uk','password123'
+union all select 'AMBER','HART',CONVERT(datetime, '05/04/1997', 103),'amber.hart@foobar.ac.uk','Y','amber.hart@foobar.ac.uk','password123'
+union all select 'BRETT','ROY', CONVERT(datetime, '24/06/1968', 103),'brett.roy@foobar.ac.uk','Y','brett.roy@foobar.ac.uk','password123'
+
+
 union all select 'ABDIEL','WOODARD',CONVERT(datetime, '22/06/1993', 103),'abdiel.woodard@foobar.ac.uk','Y','password123'
 union all select 'LAWSON','WONG',CONVERT(datetime, '28/02/2003', 103),'lawson.wong@anemailprovider.com','Y','password123'
 union all select 'KENDALL','INGRAM',CONVERT(datetime, '15/07/1978', 103),'kendall.ingram@foobar.ac.uk','Y','password123'
@@ -219,11 +223,11 @@ union all select 'BECKETT','FRANK',CONVERT(datetime, '09/08/1991', 103),'beckett
 union all select 'ANYA','DUKE',CONVERT(datetime, '04/04/1995', 103),'anya.duke@barfoo.co.uk','Y','password123'
 union all select 'MADELINE','KEY',CONVERT(datetime, '07/04/1999', 103),'madeline.key@anemailprovider.com','Y','password123'
 union all select 'BRIANNA','OWENS',CONVERT(datetime, '03/11/1985', 103),'brianna.owens@anemailprovider.com','Y','password123'
-union all select 'TIANNA','VILLA',CONVERT(datetime, '30/09/1994', 103),'tianna.villa@foobar.ac.uk','Y','password123'
+
 union all select 'JAYLEN','HART',CONVERT(datetime, '05/07/1984', 103),'jaylen.hart@foobar.ac.uk','Y','password123'
 union all select 'CHRISTINE','KRISTJANSSON',CONVERT(datetime, '18/08/1997', 103),'christine.kristjansson@barfoo.co.uk','N','password123'
 union all select 'SHELBY','LOGAN',CONVERT(datetime, '02/02/2005', 103),'shelby.logan@foobar.ac.uk,57563','Y','password123'
-union all select 'KATE','WHITEING',CONVERT(datetime, '16/06/1972', 103),'kate.whiteing@barfoo.co.uk','N','password123'
+
 
 
 declare @studentId uniqueidentifier, @courseId uniqueidentifier, @admissionTermId uniqueidentifier;

@@ -102,5 +102,11 @@ namespace PGProgrammeApplications.Controllers
 
             };
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _db.Dispose();
+        }
     }
 }

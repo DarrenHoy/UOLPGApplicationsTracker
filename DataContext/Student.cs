@@ -27,6 +27,7 @@ namespace PGProgrammeApplications.DataContext
         public System.DateTime DateOfBirth { get; set; }
         public string IsUkResident { get; set; }
         public string UserPassword { get; set; }
+        public string Username { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Application> Applications { get; set; }

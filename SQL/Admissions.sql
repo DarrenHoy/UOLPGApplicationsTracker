@@ -23,6 +23,7 @@ create table Student(
 	EmailAddress nvarchar(500) not null,
 	DateOfBirth date not null,
 	IsUkResident char not null,
+	Username nvarchar(100) not null,
 	UserPassword nvarchar(100) not null,
 
 	constraint CK_Student_IsUKResident check (IsUkResident IN ('Y','N')),

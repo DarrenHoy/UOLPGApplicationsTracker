@@ -4,11 +4,7 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>Welcome @Model.UserDisplayName</h1>
-    
-</div>
-
+<h1>Welcome @Model.UserDisplayName</h1>
 @{      
     if (Model.HomePageType == PGProgrammeApplications.Security.AppIdentityType.Student)
     {

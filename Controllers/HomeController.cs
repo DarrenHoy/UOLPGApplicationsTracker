@@ -21,7 +21,7 @@ namespace PGProgrammeApplications.Controllers
         {
             Func<string, AppIdentity> ImpersonateStudent = email =>
             {
-                var student = _db.Students.FirstOrDefault(s => s.EmailAddress == email);
+                var student = _db.Students.FirstOrDefault(s => s.Username == email);
                 return new AppIdentity(student.Id, student.EmailAddress, student.EmailAddress, student.UserPassword, new List<string>() { "Student" });
             };
 

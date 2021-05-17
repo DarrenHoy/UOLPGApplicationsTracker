@@ -27,8 +27,12 @@ namespace PGProgrammeApplications.Controllers
         
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string returnUrl, string errorMessage)
         {
+            if (errorMessage != String.Empty)
+            {
+                ViewBag.ErrorMessage = errorMessage;
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -42,7 +46,7 @@ namespace PGProgrammeApplications.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToAction("Login", "Account", new { errorMessage = "Sorry, we couldn't find those details", returnUrl=returnUrl });
             }
 
             /*
@@ -53,7 +57,7 @@ namespace PGProgrammeApplications.Controllers
              * because the identity system is managing it and just implicitly passing that data along with every request.
              * 
              * Also, it becomes quite trivial to hand over this methodology to an external Claims provider - you
-             * just have the provider attach the DatabaseId claim
+             * just have the provider attach the DatabaseId (or whatever you like) claim
              */
 
             var owinContext = Request.GetOwinContext();
@@ -71,9 +75,8 @@ namespace PGProgrammeApplications.Controllers
             }
 
 
-            ViewBag.ErrorMessage = "Sorry, we couldn't find those details.";
-            return View();
-            
+            return RedirectToAction("Login", "Account", new { errorMessage = "Sorry, we couldn't find those details", returnUrl = returnUrl });
+
         }
 
         public ActionResult Logout()
